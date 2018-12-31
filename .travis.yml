@@ -1,4 +1,4 @@
-language: c
+language: cpp
 
 services:
   - docker
@@ -26,4 +26,4 @@ before_script:
   - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
 
 script:
-  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; make"
+  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports LIBPNG=$PS2SDK/ports ZLIB=$PS2SDK/ports LIBTIFF=$PS2SDK/ports; cd /gsKit/; make"
