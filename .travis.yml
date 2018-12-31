@@ -5,13 +5,17 @@ services:
 
 sudo: required
 
+env:
+  - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain PS2FORK=ps2dev PS2BRANCH=master"
+  - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
+
 matrix:
   fast_finish: false
-  include:
-    - env:
-        - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain PS2FORK=ps2dev PS2BRANCH=master"
-    - env:
-        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
+#  include:
+#    - env:
+#        - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain PS2FORK=ps2dev PS2BRANCH=master"
+#    - env:
+#        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
   allow_failures:
     - env:
         - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
@@ -36,7 +40,7 @@ before_script:
   - docker exec -t $(cat container_id) bash -c "cd /ps2sdk/; make install --silent"
 
   # installing ports
-  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk-ports; cd /ps2sdk-ports/; make zlib libpng libjpeg freetype2"
+  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk-ports; cd /ps2sdk-ports/; make libtiff libpng libjpeg freetype2"
 
   - docker exec -t $(cat container_id) bash -c "mkdir -p /gsKit/;"
   - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
