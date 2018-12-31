@@ -9,13 +9,12 @@ matrix:
   fast_finish: false
   include:
     - env:
-        - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain"
-
+        - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain PS2FORK=ps2dev PS2BRANCH=master"
     - env:
-        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain"
+        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
   allow_failures:
     - env:
-        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain"
+        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
 
 before_install:
     - eval "${MATRIX_EVAL}"
@@ -33,7 +32,7 @@ before_script:
 
   # Configure ps2sdk
   - docker exec -t $(cat container_id) bash -c "ls -l"
-  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk"
+  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/${PS2FORK}/ps2sdk -b ${PS2BRANCH}"
   - docker exec -t $(cat container_id) bash -c "cd /ps2sdk/; make install --silent"
 
   # installing ports
