@@ -51,7 +51,7 @@ static inline void *gsKit_heap_alloc(GSGLOBAL *gsGlobal, int qsize, int bsize, i
 	gsGlobal->CurQueue->last_type = type;
 	gsGlobal->CurQueue->tag_size += qsize;
 	void *p_heap = gsGlobal->CurQueue->pool_cur;
-	(u8*)gsGlobal->CurQueue->pool_cur += bsize;
+	*(u8*)gsGlobal->CurQueue->pool_cur += bsize;
 
 	return p_heap;
 }
@@ -79,9 +79,9 @@ static inline void *gsKit_heap_alloc_dma(GSGLOBAL *gsGlobal, int qsize, int bsiz
 	gsGlobal->CurQueue->same_obj = 0;
 
 	void *p_heap = gsGlobal->CurQueue->pool_cur;
-	(u8*)gsGlobal->CurQueue->pool_cur += bsize;
+	*(u8*)gsGlobal->CurQueue->pool_cur += bsize;
 	gsGlobal->CurQueue->dma_tag = gsGlobal->CurQueue->pool_cur;
-	(u8*)gsGlobal->CurQueue->pool_cur += 16;
+	*(u8*)gsGlobal->CurQueue->pool_cur += 16;
 
 	return p_heap;
 }
