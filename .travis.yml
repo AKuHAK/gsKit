@@ -1,0 +1,29 @@
+language: c
+
+services:
+  - docker
+
+sudo: required
+
+before_script:
+
+  # Get docker image
+  - docker pull akuhak/ps2toolchain:latest
+  - docker ps
+
+  # Run DOCKER, run!
+  - docker run -d akuhak/ps2toolchain bash -c "while true; do sleep 5; done" > container_id
+
+  # Configure ps2sdk
+  - docker exec -t $(cat container_id) bash -c "ls -l"
+  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk"
+  - docker exec -t $(cat container_id) bash -c "cd /ps2sdk/; make install --silent"
+
+  # installing ports
+  - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk-ports; cd /ps2sdk-ports/; make zlib libpng libjpeg freetype2"
+
+  - docker exec -t $(cat container_id) bash -c "mkdir -p /gsKit/;"
+  - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
+
+script:
+  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; make"
