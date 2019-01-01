@@ -20,6 +20,7 @@ if [ -f $PS2SDK/ports/include/libjpg.h ];
 then
 	echo -e "\tLIBJPEG detected."
 	export LIBJPEG=$PS2SDK/ports
+	echo -e "\tLIBJPEG = ${LIBJPEG}."
 else
 	echo -e "\tLIBJPEG not detected."
 fi
@@ -28,6 +29,7 @@ if [ -f $PS2SDK/ports/include/png.h ];
 then
 	echo -e "\tLIBPNG detected."
 	export LIBPNG=$PS2SDK/ports
+	echo -e "\tLIBPNG = ${LIBPNG}."
 else
 	echo -e "\tLIBPNG not detected."
 fi
