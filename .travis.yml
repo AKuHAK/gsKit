@@ -10,12 +10,7 @@ env:
   - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
 
 matrix:
-  fast_finish: false
-#  include:
-#    - env:
-#        - MATRIX_EVAL="PS2DOCKER=akuhak/ps2toolchain PS2FORK=ps2dev PS2BRANCH=master"
-#    - env:
-#        - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
+#  fast_finish: false
   allow_failures:
     - env:
         - MATRIX_EVAL="PS2DOCKER=ps2homebrew/ps2toolchain PS2FORK=uyjulian PS2BRANCH=uyjworking"
@@ -24,14 +19,11 @@ before_install:
     - eval "${MATRIX_EVAL}"
 
 before_script:
-
   # Get docker image
-#  - docker pull akuhak/ps2toolchain:latest
   - docker pull ${PS2DOCKER}:latest
   - docker ps
 
   # Run DOCKER, run!
-#  - docker run -d akuhak/ps2toolchain bash -c "while true; do sleep 5; done" > container_id
   - docker run -d ${PS2DOCKER} bash -c "while true; do sleep 5; done" > container_id
 
   # Configure ps2sdk
@@ -46,5 +38,5 @@ before_script:
   - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
 
 script:
-#  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports LIBPNG=$PS2SDK/ports ZLIB=$PS2SDK/ports LIBTIFF=$PS2SDK/ports; cd /gsKit/; make"
-  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; ./setup.sh"
+  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports && export LIBPNG=$PS2SDK/ports && export ZLIB=$PS2SDK/ports && export LIBTIFF=$PS2SDK/ports && cd /gsKit/ && make"
+#  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; ./setup.sh"
