@@ -38,5 +38,5 @@ before_script:
   - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
 
 script:
-  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports && export LIBPNG=$PS2SDK/ports && export ZLIB=$PS2SDK/ports && export LIBTIFF=$PS2SDK/ports && cd /gsKit/ && make"
-#  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; ./setup.sh"
+#  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports && export LIBPNG=$PS2SDK/ports && export ZLIB=$PS2SDK/ports && export LIBTIFF=$PS2SDK/ports && cd /gsKit/ && make"
+  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; ./setup.sh"
