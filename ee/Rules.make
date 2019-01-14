@@ -68,7 +68,7 @@ $(EE_OBJS_DIR):
 
 ifeq ($(use_cpp), true)
 $(EE_BIN) : $(EE_OBJS) $(PS2SDK)/ee/startup/crt0.o
-	$(EE_CXX) $(EE_NO_CRT) -T$(PS2SDK)/ee/startup/linkfile $(EE_LDFLAGS) \
+	$(EE_CXX) $(EE_NO_CRT) -T$(PS2SDK)/ee/startup/linkfile $(EE_CFLAGS) \
 		-o $(EE_BIN) $(PS2SDK)/ee/startup/crt0.o $(EE_OBJS) $(EE_LDFLAGS) $(EE_LIBS)
 else
 $(EE_BIN) : $(EE_OBJS) $(PS2SDK)/ee/startup/crt0.o
