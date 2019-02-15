@@ -33,10 +33,17 @@ before_script:
   # installing ports
   - docker exec -t $(cat container_id) bash -c "cd /; git clone https://github.com/ps2dev/ps2sdk-ports; cd /ps2sdk-ports/; make libtiff libpng libjpeg freetype2"
 
-  - docker exec -t $(cat container_id) bash -c "mkdir -p /gsKit/;"
-  - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/gsKit/
+  - docker exec -t $(cat container_id) bash -c "mkdir -p /work/;"
+  - docker cp $TRAVIS_BUILD_DIR/. $(cat container_id):/work/
 
 script:
   # It is difficult to export variables into Docker image, so I use setup.sh for this
 #  - docker exec -t $(cat container_id) bash -c "export LIBJPEG=$PS2SDK/ports && export LIBPNG=$PS2SDK/ports && export ZLIB=$PS2SDK/ports && export LIBTIFF=$PS2SDK/ports && cd /gsKit/ && make"
-  - docker exec -t $(cat container_id) bash -c "cd /gsKit/; ./setup.sh && make GSKIT_DEBUG=1"
+  - docker exec -t $(cat container_id) bash -c "cd /work/; ./setup.sh && make GSKIT_DEBUG=1; make GSKIT_DEBUG=1 -C examples"
+
+after_success:
+ - mkdir $TRAVIS_BUILD_DIR/samples_test
+ - docker cp $(cat container_id):/work/examples/. $TRAVIS_BUILD_DIR/samples_test/
+ - cd $TRAVIS_BUILD_DIR
+ - zip -r gsKit_samples_$TRAVIS_BUILD_NUMBER.zip samples_test
+ - curl --upload-file gsKit_samples_$TRAVIS_BUILD_NUMBER.zip https://transfer.sh/gsKit_samples_$TRAVIS_BUILD_NUMBER.zip | grep transfer
