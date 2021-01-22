@@ -25,7 +25,7 @@ jobs:
         LIBPNG: ${PS2SDK}/ports
       run: |
         git clone https://github.com/ps2dev/gsKit
-        cd gsKit && git checkout v1.0
+        cd gsKit && git checkout v1.2.0
         make clean all install
     
     - name: Get short SHA
